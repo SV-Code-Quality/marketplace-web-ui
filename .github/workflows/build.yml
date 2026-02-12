@@ -18,6 +18,17 @@ jobs:
       with:
         # Disabling shallow clones is recommended for improving the relevancy of reporting
         fetch-depth: 0
+    - name: Import SonarQube certificate into Java truststore
+      run: |
+        echo | openssl s_client -servername sq202610.dev.sharingvision.biz -connect sq202610.dev.sharingvision.biz:443 \
+        | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > sonar.crt
+
+        sudo keytool -import -trustcacerts \
+          -alias sonar \
+          -file sonar.crt \
+          -keystore $JAVA_HOME/lib/security/cacerts \
+          -storepass changeit \
+          -noprompt
     - name: SonarQube Scan
       uses: SonarSource/sonarqube-scan-action@v7.0.0 # Ex: v4.1.0, or sha1, See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
       env:
