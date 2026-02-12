@@ -18,15 +18,12 @@ jobs:
       with:
         # Disabling shallow clones is recommended for improving the relevancy of reporting
         fetch-depth: 0
-    - name: Import SonarQube certificate into Java truststore
+    - name: Create custom truststore
       run: |
-        echo | openssl s_client -servername sq202610.dev.sharingvision.biz -connect sq202610.dev.sharingvision.biz:443 \
-        | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > sonar.crt
-
-        sudo keytool -import -trustcacerts \
-          -alias sonar \
-          -file sonar.crt \
-          -keystore $JAVA_HOME/lib/security/cacerts \
+        curl -o isrgrootx1.pem https://letsencrypt.org/certs/isrgrootx1.pem
+        keytool -import -alias isrgrootx1 \
+          -file isrgrootx1.pem \
+          -keystore truststore.jks \
           -storepass changeit \
           -noprompt
     - name: SonarQube Scan
