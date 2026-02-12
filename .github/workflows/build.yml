@@ -30,7 +30,7 @@ jobs:
       uses: SonarSource/sonarqube-scan-action@v7.0.0
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
-    SONAR_SCANNER_OPTS: >
-      -Djavax.net.ssl.trustStore=${{ github.workspace }}/truststore.jks
-      -Djavax.net.ssl.trustStorePassword=changeit
+        SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+        SONAR_SCANNER_OPTS: >
+          -Djavax.net.ssl.trustStore=${{ github.workspace }}/truststore.jks
+          -Djavax.net.ssl.trustStorePassword=changeit
